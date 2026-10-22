@@ -1,0 +1,721 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>My Cayenne — your Cayenne Electric on your iPhone</title>
+  <meta name="description" content="Battery, climate, trips, location and a racing game for the Cayenne Electric, with a 3D car in your paint. Private iPhone app — how to install it.">
+  <meta name="theme-color" content="#7F9A9B">
+  <meta name="color-scheme" content="light">
+  <meta property="og:title" content="My Cayenne">
+  <meta property="og:description" content="Your Cayenne Electric on your iPhone: battery, climate, trips, location and a race game.">
+  <meta property="og:image" content="https://georgeschell.github.io/my-cayenne/assets/energy.webp">
+  <link rel="icon" type="image/png" href="assets/favicon.png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@200;300;400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    /* The app's colours: one studio tone per view (Studio.swift: StudioTheme) */
+    :root {
+      --sage: #7F9A9B;  --sage-top: #86A0A1;  --sage-word: #3E5556;  --sage-ink: #1B2728;
+      --sand: #CDBCA6;  --sand-top: #D6C7B3;  --sand-word: #8A7458;  --sand-ink: #2A2118;
+      --clay: #C09F90;  --clay-top: #C9AA9C;  --clay-word: #7C5546;  --clay-ink: #2B1A14;
+      --slate: #8796AB; --slate-top: #93A2B6; --slate-word: #4A5A72; --slate-ink: #161E2B;
+      --dusk: #9F99B1;  --dusk-top: #A9A4BA;  --dusk-word: #544D6E;  --dusk-ink: #1C1828;
+      --light: #EDEFEC; --light-top: #F3F4F2; --light-word: #AEB6AC;
+      --ink: #17191E;
+      --ink-2: rgba(23, 25, 30, .72);
+      --ink-3: rgba(23, 25, 30, .5);
+      --card: #FFFFFF;
+      --chip: rgba(0, 0, 0, .06);
+      --blue: #3366DB;
+      --green-1: #6FB67E; --green-2: #9CD296;
+      --radius: 40px;
+      --sans: -apple-system, BlinkMacSystemFont, "SF Pro Text", Inter, "Segoe UI", Roboto, sans-serif;
+      --compressed: "SF Pro Display Compressed", "Barlow Condensed", "Arial Narrow", sans-serif;
+      --gutter: clamp(16px, 4vw, 40px);
+      --max: 1180px;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; -webkit-text-size-adjust: 100%; }
+    body {
+      margin: 0; font-family: var(--sans); color: var(--ink); background: var(--light);
+      line-height: 1.5; -webkit-font-smoothing: antialiased; overflow-x: hidden;
+    }
+    img { display: block; max-width: 100%; }
+    a { color: inherit; }
+    .wrap { max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter); }
+
+    /* The big light compressed word, like "Electric" above the card in the app */
+    .word {
+      font-family: var(--compressed); font-weight: 300; letter-spacing: -.01em; line-height: .86;
+      font-stretch: condensed; margin: 0;
+    }
+
+    /* ---------- Top bar ---------- */
+    .bar {
+      position: fixed; inset: 0 0 auto 0; z-index: 20;
+      padding: max(12px, env(safe-area-inset-top)) var(--gutter) 12px;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: background .3s, box-shadow .3s, backdrop-filter .3s;
+    }
+    .bar.scrolled { background: rgba(243, 244, 242, .72); backdrop-filter: saturate(1.6) blur(18px); -webkit-backdrop-filter: saturate(1.6) blur(18px); box-shadow: 0 1px 0 rgba(0,0,0,.06); }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; font-weight: 600; font-size: 16px; letter-spacing: -.01em; }
+    .brand img { width: 30px; height: 30px; border-radius: 8px; }
+    .pill {
+      display: inline-flex; align-items: center; gap: 8px; border: 0; cursor: pointer; text-decoration: none;
+      font: 600 15px/1 var(--sans); padding: 12px 20px; border-radius: 999px;
+      transition: transform .15s ease, box-shadow .2s, background .2s;
+    }
+    .pill:active { transform: scale(.96); }
+    .pill.dark { background: var(--ink); color: #fff; box-shadow: 0 8px 24px rgba(23,25,30,.22); }
+    .pill.dark:hover { background: #2b2e35; }
+    .pill.white { background: #fff; color: var(--ink); box-shadow: 0 6px 20px rgba(0,0,0,.08); }
+    .pill.small { padding: 9px 16px; font-size: 14px; }
+    .pill svg { width: 18px; height: 18px; }
+
+    /* ---------- Hero (the Electric view: sage) ---------- */
+    .hero {
+      position: relative; z-index: 2; color: var(--sage-ink);
+      background: linear-gradient(180deg, var(--sage-top), var(--sage) 70%, #7C9696);
+      padding: calc(84px + env(safe-area-inset-top)) 0 0;
+    }
+    .hero .wrap { display: grid; grid-template-columns: 1.1fr .9fr; gap: 40px; align-items: end; }
+    .hero-copy { padding-bottom: 120px; position: relative; z-index: 2; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 500;
+      color: rgba(27, 39, 40, .7); margin-bottom: 18px;
+    }
+    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: #3DDB85; box-shadow: 0 0 0 4px rgba(61,219,133,.25); }
+    .hero .word { font-size: clamp(96px, 15vw, 210px); color: var(--sage-word); opacity: .85; margin-left: -.04em; }
+    .hero h1 {
+      font-size: clamp(26px, 3.2vw, 40px); line-height: 1.12; letter-spacing: -.025em; font-weight: 700;
+      margin: 18px 0 14px; color: #fff; max-width: 15em; text-wrap: balance;
+    }
+    .hero p.lead { font-size: clamp(16px, 1.5vw, 18px); color: rgba(255,255,255,.86); max-width: 32em; margin: 0 0 28px; }
+    .cta { display: flex; flex-wrap: wrap; gap: 12px; }
+    .hero-note { margin-top: 18px; font-size: 13px; color: rgba(27,39,40,.65); }
+
+    .hero-phone { position: relative; justify-self: center; width: min(340px, 78vw); margin-bottom: -90px; z-index: 1; }
+    .hero-phone::after {
+      content: ""; position: absolute; left: 8%; right: 8%; bottom: 60px; height: 60px; z-index: -1;
+      background: radial-gradient(closest-side, rgba(0,0,0,.35), transparent); filter: blur(10px);
+    }
+
+    /* A phone: the screenshot inside a thin dark bezel */
+    .phone {
+      position: relative; border-radius: 15.5% / 7.2%; padding: 3.2%; background: #0E0F12;
+      box-shadow: 0 0 0 1.5px #3a3d44 inset, 0 40px 80px -24px rgba(20, 30, 30, .45), 0 18px 36px -18px rgba(0,0,0,.35);
+    }
+    .phone img { width: 100%; height: auto; border-radius: 13.5% / 6.3%; aspect-ratio: 1206 / 2622; object-fit: cover; background: #ccc; }
+
+    /* ---------- Views pager (swipe between cards like the app) ---------- */
+    .views { position: relative; padding: 140px 0 70px; transition: background-color .6s ease; background: var(--sage); }
+    .views-head { display: flex; align-items: end; justify-content: space-between; gap: 20px; margin-bottom: 28px; }
+    .views-head h2, .section-title {
+      font-size: clamp(28px, 3.6vw, 44px); letter-spacing: -.03em; line-height: 1.08; margin: 0; font-weight: 700; text-wrap: balance;
+    }
+    .views-head p { margin: 8px 0 0; color: rgba(0,0,0,.55); max-width: 30em; }
+    .arrows { display: flex; gap: 10px; flex-shrink: 0; }
+    .arrow {
+      width: 46px; height: 46px; border-radius: 50%; border: 0; background: #fff; cursor: pointer; display: grid; place-items: center;
+      box-shadow: 0 6px 18px rgba(0,0,0,.1); transition: transform .15s, opacity .2s; color: var(--ink);
+    }
+    .arrow:active { transform: scale(.92); }
+    .arrow:disabled { opacity: .35; cursor: default; }
+    .arrow svg { width: 20px; height: 20px; }
+
+    .track {
+      display: grid; grid-auto-flow: column; grid-auto-columns: 100%; overflow-x: auto; scroll-snap-type: x mandatory;
+      scrollbar-width: none; overscroll-behavior-x: contain; -webkit-overflow-scrolling: touch;
+    }
+    .track::-webkit-scrollbar { display: none; }
+    .slide { scroll-snap-align: center; scroll-snap-stop: always; }
+    .slide-inner {
+      max-width: var(--max); margin: 0 auto; padding: 0 var(--gutter);
+      display: grid; grid-template-columns: minmax(0, 300px) minmax(0, 1fr); gap: clamp(28px, 5vw, 72px); align-items: center;
+    }
+    .slide .phone { width: 100%; max-width: 300px; justify-self: center; }
+    .slide .word { font-size: clamp(84px, 11vw, 168px); margin: 0 0 18px -.04em; }
+    .feature-card {
+      background: var(--card); border-radius: var(--radius); padding: clamp(24px, 3vw, 36px);
+      box-shadow: 0 30px 60px -30px rgba(0,0,0,.25); max-width: 560px;
+    }
+    .feature-card .cap { font-size: 15px; font-weight: 500; color: var(--ink-2); margin-bottom: 6px; }
+    .feature-card h3 { font-size: clamp(24px, 2.6vw, 32px); letter-spacing: -.025em; line-height: 1.12; margin: 0 0 18px; font-weight: 700; }
+    .feature-card ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+    .feature-card li { display: grid; grid-template-columns: 22px 1fr; gap: 12px; color: var(--ink-2); font-size: 15.5px; }
+    .feature-card li svg { width: 20px; height: 20px; margin-top: 2px; color: var(--ink); }
+    .feature-card li b { color: var(--ink); font-weight: 600; }
+
+    .dots { display: flex; justify-content: center; gap: 9px; margin-top: 40px; }
+    .dots button {
+      width: 8px; height: 8px; padding: 0; border: 0; border-radius: 50%; background: rgba(0,0,0,.22); cursor: pointer;
+      transition: background .3s, transform .3s;
+    }
+    .dots button[aria-current="true"] { background: rgba(0,0,0,.75); transform: scale(1.15); }
+
+    /* ---------- Tap a card ---------- */
+    .deeper { padding: 110px 0 90px; background: linear-gradient(180deg, var(--light-top), var(--light)); }
+    .section-sub { color: var(--ink-2); max-width: 36em; margin: 12px 0 0; font-size: 17px; }
+    .trio { display: grid; grid-template-columns: repeat(3, 1fr); gap: clamp(20px, 3vw, 40px); margin-top: 52px; }
+    .trio figure { margin: 0; }
+    .trio .phone { max-width: 290px; margin: 0 auto; }
+    .trio figcaption { text-align: center; margin: 22px auto 0; max-width: 290px; }
+    .trio figcaption b { display: block; font-size: 17px; letter-spacing: -.01em; margin-bottom: 4px; }
+    .trio figcaption span { color: var(--ink-2); font-size: 15px; }
+
+    .perks { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 80px; }
+    .perk { background: #fff; border-radius: 28px; padding: 24px; }
+    .perk .ico { width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; background: var(--chip); margin-bottom: 16px; }
+    .perk .ico svg { width: 22px; height: 22px; }
+    .perk b { display: block; font-size: 16px; margin-bottom: 4px; letter-spacing: -.01em; }
+    .perk span { color: var(--ink-2); font-size: 14.5px; }
+
+    /* ---------- Install ---------- */
+    .install { padding: 110px 0 100px; background: var(--sage); color: var(--sage-ink); position: relative; overflow: hidden; }
+    .install .word.bg {
+      position: absolute; right: -2vw; top: 40px; font-size: clamp(120px, 22vw, 320px); color: var(--sage-word); opacity: .28;
+      pointer-events: none; user-select: none; white-space: nowrap;
+    }
+    .install .section-title { color: #fff; position: relative; }
+    .install .section-sub { color: rgba(255,255,255,.88); position: relative; }
+    .why {
+      position: relative; margin-top: 28px; display: flex; gap: 14px; align-items: flex-start;
+      background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3); border-radius: 22px; padding: 18px 20px; max-width: 760px;
+      color: #fff; font-size: 15px;
+    }
+    .why svg { width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px; }
+
+    .steps { position: relative; display: grid; gap: 16px; margin-top: 44px; counter-reset: step; }
+    .step {
+      background: #fff; color: var(--ink); border-radius: var(--radius); padding: clamp(22px, 3vw, 34px);
+      display: grid; grid-template-columns: 56px 1fr; gap: 6px 20px; box-shadow: 0 24px 50px -30px rgba(0,0,0,.3);
+    }
+    .step .num {
+      grid-row: span 2; width: 56px; height: 56px; border-radius: 50%; display: grid; place-items: center;
+      font: 300 34px/1 var(--compressed); color: #fff; background: var(--sage);
+    }
+    .step:nth-child(2) .num { background: var(--sand); }
+    .step:nth-child(3) .num { background: var(--clay); }
+    .step:nth-child(4) .num { background: var(--slate); }
+    .step:nth-child(5) .num { background: var(--dusk); }
+    .step h3 { margin: 4px 0 0; font-size: 21px; letter-spacing: -.02em; line-height: 1.25; }
+    .step .body { color: var(--ink-2); font-size: 15.5px; }
+    .step .body p { margin: 8px 0 0; }
+    .step .body ol, .step .body ul { margin: 10px 0 0; padding-left: 20px; display: grid; gap: 6px; }
+    .step .body b { color: var(--ink); font-weight: 600; }
+    .path { font-weight: 600; color: var(--ink); }
+    .path i { font-style: normal; color: var(--ink-3); }
+    .tabs { display: flex; gap: 6px; background: var(--chip); border-radius: 999px; padding: 4px; width: fit-content; margin-top: 14px; flex-wrap: wrap; }
+    .tabs button {
+      border: 0; background: transparent; padding: 8px 14px; border-radius: 999px; font: 500 14px/1 var(--sans); color: var(--ink-2); cursor: pointer;
+    }
+    .tabs button[aria-selected="true"] { background: #fff; color: var(--ink); box-shadow: 0 2px 8px rgba(0,0,0,.08); }
+    .tabpanel[hidden] { display: none; }
+    .hint { font-size: 14px; color: var(--ink-3); margin-top: 10px; }
+    .tip {
+      margin-top: 14px; padding: 12px 16px; border-radius: 16px; background: #F4F1EC; color: #5d4a33; font-size: 14.5px;
+    }
+
+    .install-box { margin-top: 18px; display: flex; flex-wrap: wrap; align-items: center; gap: 18px 28px; }
+    .install-btn {
+      display: inline-flex; align-items: center; gap: 14px; text-decoration: none; background: var(--ink); color: #fff;
+      border-radius: 22px; padding: 14px 22px 14px 14px; box-shadow: 0 14px 30px -10px rgba(23,25,30,.45);
+      transition: transform .15s;
+    }
+    .install-btn:active { transform: scale(.97); }
+    .install-btn img { width: 48px; height: 48px; border-radius: 12px; }
+    .step .install-btn b { display: block; font-size: 17px; letter-spacing: -.01em; color: #fff; }
+    .install-btn span { display: block; font-size: 13px; color: rgba(255,255,255,.65); }
+    .install-btn.off { opacity: .45; pointer-events: none; box-shadow: none; }
+    .qr { display: flex; align-items: center; gap: 16px; }
+    .qr[hidden] { display: none; }
+    .qr img { width: 112px; height: 112px; padding: 10px; background: #fff; border-radius: 16px; box-shadow: 0 0 0 1px rgba(0,0,0,.08); }
+    .qr p { margin: 0; font-size: 14px; max-width: 16em; color: var(--ink-2); }
+    .status {
+      display: none; margin-top: 14px; padding: 12px 16px; border-radius: 16px; font-size: 14.5px;
+      background: #FDECEA; color: #8a2a22;
+    }
+    .status.show { display: block; }
+
+    .needs { position: relative; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 16px; }
+    .need { background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.3); color: #fff; border-radius: 24px; padding: 18px 20px; font-size: 14.5px; }
+    .need b { display: block; font-size: 15.5px; margin-bottom: 2px; }
+
+    /* ---------- FAQ ---------- */
+    .faq { padding: 100px 0 90px; background: var(--light); }
+    .faq-list { margin-top: 36px; display: grid; gap: 10px; max-width: 860px; }
+    details { background: #fff; border-radius: 24px; padding: 0 24px; transition: box-shadow .2s; }
+    details[open] { box-shadow: 0 18px 40px -26px rgba(0,0,0,.25); }
+    summary {
+      list-style: none; cursor: pointer; padding: 20px 0; font-weight: 600; font-size: 16.5px; letter-spacing: -.01em;
+      display: flex; justify-content: space-between; gap: 16px; align-items: center;
+    }
+    summary::-webkit-details-marker { display: none; }
+    summary::after {
+      content: ""; width: 30px; height: 30px; flex-shrink: 0; border-radius: 50%; background: var(--chip)
+        url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%2317191E' stroke-width='2.4' stroke-linecap='round'%3E%3Cpath d='M12 6v12M6 12h12'/%3E%3C/svg%3E") center / 14px no-repeat;
+      transition: transform .25s;
+    }
+    details[open] summary::after { transform: rotate(45deg); }
+    details .a { padding: 0 0 22px; color: var(--ink-2); font-size: 15.5px; }
+    details .a p { margin: 0 0 8px; }
+
+    footer { background: #E6E8E4; padding: 44px 0 calc(44px + env(safe-area-inset-bottom)); font-size: 13.5px; color: var(--ink-3); }
+    footer .wrap { display: flex; flex-wrap: wrap; gap: 14px 40px; justify-content: space-between; }
+    footer p { margin: 0; max-width: 46em; }
+
+    /* ---------- Reveal on scroll ---------- */
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity .8s ease, transform .8s cubic-bezier(.2,.7,.2,1); }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) {
+      html { scroll-behavior: auto; }
+      .reveal { opacity: 1; transform: none; transition: none; }
+      .views { transition: none; }
+    }
+
+    /* ---------- Small screens ---------- */
+    @media (max-width: 900px) {
+      .hero .wrap { grid-template-columns: 1fr; gap: 10px; }
+      .hero-copy { padding-bottom: 30px; }
+      .hero-phone { width: min(300px, 74vw); }
+      .slide-inner { grid-template-columns: 1fr; gap: 26px; }
+      .slide .phone { max-width: 250px; order: 2; }
+      .slide .word { margin-bottom: 14px; }
+      .trio { grid-template-columns: 1fr; gap: 56px; }
+      .perks { grid-template-columns: 1fr 1fr; }
+      .needs { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 560px) {
+      .arrows { display: none; }
+      .perks { gap: 10px; margin-top: 56px; }
+      .perk { padding: 18px; border-radius: 24px; }
+      .perk .ico { width: 38px; height: 38px; margin-bottom: 12px; }
+      .perk span { font-size: 13.5px; }
+      .step { grid-template-columns: 1fr; }
+      .step .num { grid-row: auto; width: 46px; height: 46px; font-size: 28px; margin-bottom: 6px; }
+      .bar .pill.small { padding: 8px 14px; }
+      .views { padding-top: 120px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="bar" id="bar">
+    <a class="brand" href="#top"><img src="assets/apple-touch-icon.png" alt="">My Cayenne</a>
+    <a class="pill dark small" href="#install">Install</a>
+  </header>
+
+  <!-- Hero: the Electric view -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="dot"></span>For the Cayenne Electric · iPhone</div>
+        <p class="word" aria-hidden="true">Electric</p>
+        <h1>Your Cayenne Electric, one swipe away.</h1>
+        <p class="lead">Battery, climate, trips and where it’s parked — each on its own calm card, with a 3D model of your car in its own paint colour. And a racing game built from your real drives.</p>
+        <div class="cta">
+          <a class="pill dark" href="#install">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
+            How to install
+          </a>
+          <a class="pill white" href="#views">See the views</a>
+        </div>
+        <p class="hero-note">Private beta · invite only · iOS 18 or later</p>
+      </div>
+      <div class="hero-phone reveal">
+        <div class="phone"><img src="assets/energy.webp" alt="The Electric view: 78 % charge, 412 km range, charging with 49 minutes left, and the 3D car on the card" width="620" height="1348" fetchpriority="high"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- The five views -->
+  <section class="views" id="views" aria-roledescription="carousel" aria-label="The app's views">
+    <div class="wrap views-head">
+      <div>
+        <h2>Five views. Swipe, like in the app.</h2>
+        <p>Every view has its own studio colour and its own angle on the car.</p>
+      </div>
+      <div class="arrows">
+        <button class="arrow" id="prev" aria-label="Previous view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 5-7 7 7 7"/></svg></button>
+        <button class="arrow" id="next" aria-label="Next view"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 5 7 7-7 7"/></svg></button>
+      </div>
+    </div>
+
+    <div class="track" id="track">
+      <article class="slide" data-bg="var(--sage)" aria-label="Electric">
+        <div class="slide-inner">
+          <div class="phone"><img src="assets/energy.webp" alt="Electric view" width="620" height="1348" loading="lazy"></div>
+          <div>
+            <p class="word" style="color: var(--sage-word)">Electric</p>
+            <div class="feature-card">
+              <div class="cap">Energy</div>
+              <h3>The card is the battery.</h3>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="17" height="10" rx="2.5"/><path d="M22 11v2M6 10v4M9.5 10v4"/></svg><span>It fills up to your charge level and shifts from <b>red</b> through amber to <b>deep green</b>.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><span>Range, charging state and <b>time until full</b> at a glance.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12h12m0 0-4-4m4 4-4 4M20 5v14"/></svg><span>Drag the <b>“charge up to”</b> slider to set the target.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-bg="var(--sand)" aria-label="Climate">
+        <div class="slide-inner">
+          <div class="phone"><img src="assets/climate.webp" alt="Climate view with 21 °C set point" width="620" height="1348" loading="lazy"></div>
+          <div>
+            <p class="word" style="color: var(--sand-word)">Climate</p>
+            <div class="feature-card">
+              <div class="cap">Climate &amp; access</div>
+              <h3>Step into a warm car.</h3>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 14.8V4a2 2 0 1 0-4 0v10.8a4 4 0 1 0 4 0z"/></svg><span>Set the cabin temperature with <b>− / power / +</b> and pre-condition before you leave.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg><span><b>Lock and unlock</b> (with your S-PIN), honk and flash.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 13h18M5 13l2-5h10l2 5v5H5z"/><circle cx="8" cy="16" r=".6"/><circle cx="16" cy="16" r=".6"/></svg><span>See whether doors, tailgate and windows are closed — the 3D doors open when the real ones do.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-bg="var(--clay)" aria-label="Trips">
+        <div class="slide-inner">
+          <div class="phone"><img src="assets/trips.webp" alt="Trips view: last trip 24 km in 38 minutes" width="620" height="1348" loading="lazy"></div>
+          <div>
+            <p class="word" style="color: var(--clay-word)">Trips</p>
+            <div class="feature-card">
+              <div class="cap">Last trip</div>
+              <h3>Your drives, summed up.</h3>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19c4-1 3-6 8-7s4-6 8-7"/><circle cx="4" cy="19" r="1.6"/><circle cx="20" cy="5" r="1.6"/></svg><span>Distance, time, consumption and average speed of every trip.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18 9l-4.2 1.4L12 15l-1.8-4.6L6 9l4.2-1.4z"/><path d="M19 15l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/></svg><span><b>Ask about your driving</b> in your own words — answered on-device by Apple Intelligence, with the numbers worked out by the app.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="8"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg><span><b>Record a drive</b> with GPS; it becomes a trip — and a race track.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-bg="var(--slate)" aria-label="Location">
+        <div class="slide-inner">
+          <div class="phone"><img src="assets/location.webp" alt="Location view: parked at the address, car seen from above on the map" width="620" height="1348" loading="lazy"></div>
+          <div>
+            <p class="word" style="color: var(--slate-word)">Location</p>
+            <div class="feature-card">
+              <div class="cap">Parked at</div>
+              <h3>Always know where it is.</h3>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.2-7-11.5a7 7 0 0 1 14 0C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg><span>The address, on a quiet map of the street, with your car seen from above.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg><span>Tap to zoom out into a full map with <b>chargers nearby</b>.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="13" cy="4" r="1.6"/><path d="M8 21l3-7 3 3v4M9 11l2-4 4 3 3 1"/></svg><span><b>Walking route</b> back to the car.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+
+      <article class="slide" data-bg="var(--dusk)" aria-label="Race">
+        <div class="slide-inner">
+          <div class="phone"><img src="assets/race.webp" alt="Race view: Cayenne Racer on the Schwarzwald Ring" width="620" height="1348" loading="lazy"></div>
+          <div>
+            <p class="word" style="color: var(--dusk-word)">Race</p>
+            <div class="feature-card">
+              <div class="cap">Cayenne Racer</div>
+              <h3>A game, built in.</h3>
+              <ul>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h13l-2 4 2 4H5"/></svg><span>Race the Cayenne in landscape and chase your <b>best lap</b>.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19c4-1 3-6 8-7s4-6 8-7"/></svg><span>Every drive you record turns into its own <b>race track</b>.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Photos taken along the way decide what the scenery looks like.</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <div class="dots" id="dots" role="tablist" aria-label="Choose a view"></div>
+  </section>
+
+  <!-- Tap a card -->
+  <section class="deeper">
+    <div class="wrap">
+      <h2 class="section-title reveal">Tap a card to go deeper.</h2>
+      <p class="section-sub reveal">The card grows to full height, the car turns to a view from above, and everything else appears underneath.</p>
+      <div class="trio">
+        <figure class="reveal">
+          <div class="phone"><img src="assets/energy_open.webp" alt="Expanded Energy card with charging power, full-at time, plug, range at 80 %, odometer and mode" width="620" height="1348" loading="lazy"></div>
+          <figcaption><b>Charging in detail</b><span>Power, when it’s full, plug state, range at your target and the odometer.</span></figcaption>
+        </figure>
+        <figure class="reveal">
+          <div class="phone"><img src="assets/climate_open.webp" alt="Expanded Climate card with unlock, honk and flash, doors, and status of lock, doors, tailgate and windows" width="620" height="1348" loading="lazy"></div>
+          <figcaption><b>Doors, locks and lights</b><span>Unlock, honk and flash, and the state of every opening.</span></figcaption>
+        </figure>
+        <figure class="reveal">
+          <div class="phone"><img src="assets/map.webp" alt="Full-screen map with chargers nearby and a route to the car" width="620" height="1348" loading="lazy"></div>
+          <figcaption><b>Chargers around the car</b><span>The location card opens into a live map with chargers and routes.</span></figcaption>
+        </figure>
+      </div>
+
+      <div class="perks">
+        <div class="perk reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4" fill="currentColor"/></svg></div>
+          <b>Your paint colour</b><span>The 3D car is painted in the colour your car reports.</span>
+        </div>
+        <div class="perk reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 0 1 14-5.3M20 12a8 8 0 0 1-14 5.3"/><path d="M18 3v4h-4M6 21v-4h4"/></svg></div>
+          <b>Pull to refresh</b><span>Pull any view down to wake the car for fresh values.</span>
+        </div>
+        <div class="perk reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v5c0 5-3.5 8.5-7 10-3.5-1.5-7-5-7-10V6z"/><path d="m9 12 2 2 4-4"/></svg></div>
+          <b>Waits for the car</b><span>Commands only show as done once the car confirms them.</span>
+        </div>
+        <div class="perk reveal">
+          <div class="ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="14" rx="2"/><path d="M8 21h8M12 18v3"/></svg></div>
+          <b>Demo mode</b><span>No car? Tap “Use demo data” to look around.</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Install -->
+  <section class="install" id="install">
+    <p class="word bg" aria-hidden="true">Install</p>
+    <div class="wrap">
+      <h2 class="section-title">How to install</h2>
+      <p class="section-sub">My Cayenne isn’t in the App Store. Five steps, about ten minutes, only once.</p>
+
+      <div class="why">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
+        <div><b>Why the extra steps?</b> The app is signed with George’s private developer certificate, not through the App Store. iOS will only install it on iPhones that George has registered by their device ID (UDID) — so your iPhone has to be added first.</div>
+      </div>
+
+      <div class="steps">
+        <div class="step">
+          <div class="num">1</div>
+          <h3>Find your iPhone’s UDID</h3>
+          <div class="body">
+            <p>The UDID is a long code that identifies your iPhone. Pick whichever is easiest:</p>
+            <div class="tabs" role="tablist">
+              <button role="tab" aria-selected="true" aria-controls="udid-mac" id="t-mac">Mac</button>
+              <button role="tab" aria-selected="false" aria-controls="udid-win" id="t-win">Windows</button>
+              <button role="tab" aria-selected="false" aria-controls="udid-phone" id="t-phone">iPhone only</button>
+            </div>
+            <div class="tabpanel" id="udid-mac" role="tabpanel" aria-labelledby="t-mac">
+              <ol>
+                <li>Connect your iPhone to the Mac with a cable and unlock it (tap <b>Trust</b> if asked).</li>
+                <li>Open <b>Finder</b> and click your iPhone in the sidebar under <i>Locations</i>.</li>
+                <li>Click the grey line under the iPhone’s name a few times until it shows <b>UDID</b>.</li>
+                <li>Right-click it and choose <b>Copy UDID</b>.</li>
+              </ol>
+            </div>
+            <div class="tabpanel" id="udid-win" role="tabpanel" aria-labelledby="t-win" hidden>
+              <ol>
+                <li>Install <b>Apple Devices</b> (or iTunes) from the Microsoft Store.</li>
+                <li>Connect your iPhone with a cable, unlock it and tap <b>Trust</b>.</li>
+                <li>Select the iPhone; under <i>General</i>, click the line with the serial number until it shows the <b>UDID</b>.</li>
+                <li>Select it and copy it with <b>Ctrl&nbsp;+&nbsp;C</b>.</li>
+              </ol>
+            </div>
+            <div class="tabpanel" id="udid-phone" role="tabpanel" aria-labelledby="t-phone" hidden>
+              <ol>
+                <li>Open <b>get.udid.io</b> in Safari on your iPhone and tap <b>Tap to find UDID</b>.</li>
+                <li>Allow the download, then go to <span class="path">Settings <i>›</i> Profile Downloaded</span> and install it.</li>
+                <li>Safari opens again and shows your UDID — copy it.</li>
+                <li>Afterwards you can remove the profile under <span class="path">Settings <i>›</i> General <i>›</i> VPN &amp; Device Management</span>.</li>
+              </ol>
+              <p class="hint">This uses a third-party website. If you’d rather not, use a Mac or PC.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">2</div>
+          <h3>Send it to George and wait for the go-ahead</h3>
+          <div class="body">
+            <p>Send George your <b>UDID</b> and your <b>iPhone model</b> (e.g. iPhone 17 Pro) in a message. He registers your iPhone and publishes a new build on this page, then lets you know.</p>
+            <div class="tip">Don’t install before he says it’s ready — until your iPhone is in the build, iOS refuses with <b>“Unable to Install”</b>.</div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">3</div>
+          <h3>Install from this page, in Safari</h3>
+          <div class="body">
+            <p>Open this page <b>on your iPhone in Safari</b> (not Chrome, and not inside WhatsApp, Instagram or Mail), tap the button and confirm with <b>Install</b>. Then go to your Home Screen and watch the icon load.</p>
+            <div class="install-box">
+              <a class="install-btn" id="installBtn" href="itms-services://?action=download-manifest&amp;url=https://georgeschell.github.io/my-cayenne/manifest.plist">
+                <img src="assets/apple-touch-icon.png" alt="">
+                <span><b>Install My Cayenne</b><span id="buildInfo">Version 1.0 (1) · 22 Oct 2026</span></span>
+              </a>
+              <div class="qr" id="qr">
+                <img src="assets/qr.svg" alt="QR code for this page">
+                <p>On a computer? Scan this with your iPhone’s camera to open the page there.</p>
+              </div>
+            </div>
+            <div class="status" id="status"></div>
+            <p class="hint">On the Home Screen the app is called <b>Electric Porsche</b>.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">4</div>
+          <h3>Turn on Developer Mode</h3>
+          <div class="body">
+            <p>The first time you open the app, iOS says <i>“Developer Mode required”</i>. That’s expected for privately signed apps:</p>
+            <ol>
+              <li>Open <span class="path">Settings <i>›</i> Privacy &amp; Security <i>›</i> Developer Mode</span> (near the very bottom).</li>
+              <li>Turn it on and tap <b>Restart</b>.</li>
+              <li>After the restart, unlock the iPhone, tap <b>Turn On</b> and enter your passcode.</li>
+            </ol>
+            <p class="hint">The Developer Mode switch only appears after the app is installed. You only do this once.</p>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="num">5</div>
+          <h3>Open it and sign in</h3>
+          <div class="body">
+            <p>Tap the <b>person icon</b> at the top right and sign in with your <b>My Porsche</b> account (Porsche ID) — the same one you use in Porsche’s own app. Your car appears in a few seconds. Unlocking asks for your <b>S-PIN</b>.</p>
+            <p>Just curious? Tap <b>Use demo data</b> instead to try every view without a car.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="needs">
+        <div class="need"><b>iPhone with iOS 18 or later</b>Registered by George (steps 1–2).</div>
+        <div class="need"><b>A Porsche ID</b>With a Cayenne Electric linked to Porsche Connect — or use demo mode.</div>
+        <div class="need"><b>“Ask” about trips</b>Needs iOS 26 and an iPhone with Apple Intelligence. Everything else works without.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Troubleshooting -->
+  <section class="faq">
+    <div class="wrap">
+      <h2 class="section-title">If something doesn’t work</h2>
+      <div class="faq-list">
+        <details>
+          <summary>“Unable to Install” or “Integrity could not be verified”</summary>
+          <div class="a"><p>Your iPhone isn’t in the current build yet. Check that George has your UDID and has confirmed the new build, then tap Install again. If the download started before he updated the page, delete the half-installed icon first.</p></div>
+        </details>
+        <details>
+          <summary>Nothing happens when I tap “Install My Cayenne”</summary>
+          <div class="a"><p>Only Safari can install apps from a web page. If you opened the link in another browser or inside a messaging app, copy the address and paste it into Safari.</p></div>
+        </details>
+        <details>
+          <summary>I can’t find Developer Mode in Settings</summary>
+          <div class="a"><p>It only shows up once a privately signed app is on the iPhone. Install the app first (step 3), try to open it once, then look again under Settings › Privacy &amp; Security, at the very bottom.</p></div>
+        </details>
+        <details>
+          <summary>“Untrusted Developer”</summary>
+          <div class="a"><p>Go to Settings › General › VPN &amp; Device Management, tap <b>Apple Development: George Schell</b> and choose <b>Trust</b>. Then open the app again.</p></div>
+        </details>
+        <details>
+          <summary>The app suddenly won’t open any more</summary>
+          <div class="a"><p>Privately signed builds have an expiry date; the current one runs until <b>28 February 2027</b>. Before then, George will post a new build here — just install it again over the old one. Your sign-in and data stay.</p></div>
+        </details>
+        <details>
+          <summary>How do I get updates?</summary>
+          <div class="a"><p>Come back to this page and tap Install again. The version and date on the button show which build is online.</p></div>
+        </details>
+        <details>
+          <summary>Is my Porsche password safe?</summary>
+          <div class="a"><p>Your password goes straight from your iPhone to Porsche’s own login server — it never passes through George or any other server. The app keeps only the login session, in the iPhone’s Keychain. For unlocking, it sends just a hash of your S-PIN, never the PIN itself.</p></div>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="wrap">
+      <p>My Cayenne is a private, unofficial hobby project by George Schell, shared with friends. It is not made, endorsed or supported by Dr. Ing. h.c. F. Porsche AG. Porsche, Cayenne and Porsche Connect are trademarks of Dr. Ing. h.c. F. Porsche AG.</p>
+      <p>Screenshots show demo data.</p>
+    </div>
+  </footer>
+
+  <script>
+    // Top bar: frosted once the page scrolls
+    const bar = document.getElementById('bar');
+    const onScroll = () => bar.classList.toggle('scrolled', scrollY > 20);
+    addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+    // Views pager: page dots, arrows and the background colour of the current view
+    const track = document.getElementById('track');
+    const slides = [...track.children];
+    const dots = document.getElementById('dots');
+    const views = document.getElementById('views');
+    const prev = document.getElementById('prev'), next = document.getElementById('next');
+    let current = 0;
+    slides.forEach((s, i) => {
+      const b = document.createElement('button');
+      b.setAttribute('role', 'tab');
+      b.setAttribute('aria-label', s.getAttribute('aria-label'));
+      b.addEventListener('click', () => go(i));
+      dots.appendChild(b);
+    });
+    function go(i) {
+      i = Math.max(0, Math.min(slides.length - 1, i));
+      track.scrollTo({ left: slides[i].offsetLeft - track.offsetLeft, behavior: 'smooth' });
+    }
+    function setCurrent(i) {
+      current = i;
+      views.style.backgroundColor = getComputedStyle(document.documentElement)
+        .getPropertyValue(slides[i].dataset.bg.slice(4, -1)).trim();
+      [...dots.children].forEach((d, k) => d.setAttribute('aria-current', k === i));
+      prev.disabled = i === 0; next.disabled = i === slides.length - 1;
+    }
+    let raf;
+    track.addEventListener('scroll', () => {
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        const i = Math.round(track.scrollLeft / track.clientWidth);
+        if (i !== current) setCurrent(i);
+      });
+    }, { passive: true });
+    prev.addEventListener('click', () => go(current - 1));
+    next.addEventListener('click', () => go(current + 1));
+    track.addEventListener('keydown', e => {
+      if (e.key === 'ArrowRight') go(current + 1);
+      if (e.key === 'ArrowLeft') go(current - 1);
+    });
+    track.tabIndex = 0;
+    setCurrent(0);
+
+    // UDID tabs
+    const tabs = [...document.querySelectorAll('.tabs [role=tab]')];
+    tabs.forEach(t => t.addEventListener('click', () => {
+      tabs.forEach(o => {
+        const on = o === t;
+        o.setAttribute('aria-selected', on);
+        document.getElementById(o.getAttribute('aria-controls')).hidden = !on;
+      });
+    }));
+
+    // Install: only Safari on an iPhone/iPad can follow the itms-services link
+    const ua = navigator.userAgent;
+    const iOS = /iPhone|iPad|iPod/.test(ua) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const otherBrowser = /CriOS|FxiOS|EdgiOS|OPiOS|GSA\/|FBAN|FBAV|Instagram|Line\/|WhatsApp|Snapchat|Twitter/.test(ua);
+    const btn = document.getElementById('installBtn'), qr = document.getElementById('qr'), status = document.getElementById('status');
+    if (iOS) {
+      qr.hidden = true;
+      if (otherBrowser) {
+        status.textContent = 'You’re not in Safari. Copy this page’s address and open it in Safari to install.';
+        status.classList.add('show');
+      }
+    } else {
+      btn.classList.add('off');
+      btn.setAttribute('aria-disabled', 'true');
+      btn.tabIndex = -1;
+    }
+
+    // Reveal on scroll
+    const io = new IntersectionObserver(es => es.forEach(e => {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+</body>
+</html>
