@@ -7,8 +7,8 @@
   <meta name="description" content="Battery, climate, trips, location and a racing game for the Cayenne Electric and Macan Electric, with a 3D car in your paint. Unofficial private iPhone app — how to install it.">
   <meta name="theme-color" content="#7F9A9B">
   <meta name="color-scheme" content="light">
-  <meta property="og:title" content="Porsche Electric (unofficial)">
-  <meta property="og:description" content="Your Cayenne or Macan Electric on your iPhone: battery, climate, trips, location and a race game.">
+  <meta property="og:title" content="Happy 40th, Mark-Benjamin! · Porsche Electric">
+  <meta property="og:description" content="A birthday app for Mark-Benjamin: the Cayenne or Macan Electric on the iPhone — battery, climate, trips, location and a race game.">
   <meta property="og:image" content="https://georgeschell.github.io/porsche-electric/assets/energy.webp">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -75,6 +75,76 @@
     .pill.small { padding: 9px 16px; font-size: 14px; }
     .pill svg { width: 18px; height: 18px; }
 
+    /* ---------- Birthday intro (the light Energy studio; the 40 charges like the battery card) ---------- */
+    .intro {
+      position: relative; min-height: 100vh; min-height: 100svh; overflow: hidden;
+      display: grid; place-items: center; text-align: center; color: var(--ink);
+      background: radial-gradient(120% 70% at 50% 38%, #FFFFFF 0%, var(--light-top) 38%, var(--light) 70%, #E3E6E1 100%);
+      padding: calc(76px + env(safe-area-inset-top)) var(--gutter) calc(92px + env(safe-area-inset-bottom));
+    }
+    .confetti { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+    .intro-inner { position: relative; z-index: 2; display: grid; justify-items: center; width: 100%; max-width: 760px; }
+    .intro-eyebrow {
+      margin: 0; display: inline-flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600;
+      letter-spacing: .16em; text-transform: uppercase; color: var(--ink-2);
+    }
+    .intro-eyebrow::before, .intro-eyebrow::after { content: ""; width: 28px; height: 1px; background: currentColor; opacity: .35; }
+
+    .forty {
+      position: relative; display: block; border: 0; padding: 0; background: none; cursor: pointer; color: inherit;
+      font: 400 min(66vw, 42vh, 440px)/.8 var(--compressed); font-stretch: condensed; letter-spacing: -.02em;
+      margin: 2vh 0 0; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
+    }
+    @supports (height: 1svh) { .forty { font-size: min(66vw, 42svh, 440px); } }
+    .forty span { display: block; padding: 0 .04em .06em; }
+    .forty-base { color: rgba(23, 25, 30, .06); -webkit-text-stroke: 1.5px rgba(23, 25, 30, .16); }
+    .forty-fill {
+      position: absolute; inset: 0; color: var(--fillc, #DB3838);
+      clip-path: inset(0 100% 0 0); -webkit-clip-path: inset(0 100% 0 0);
+    }
+    .forty-shadow {
+      position: absolute; left: 12%; right: 12%; bottom: -2%; height: 9%; border-radius: 50%; z-index: -1;
+      background: radial-gradient(closest-side, rgba(0,0,0,.16), transparent);
+    }
+    .forty.full .forty-fill { animation: glow 1.6s ease-out 1; }
+    @keyframes glow {
+      0% { filter: drop-shadow(0 0 0 rgba(61, 219, 133, 0)); }
+      35% { filter: drop-shadow(0 0 26px rgba(61, 219, 133, .55)); }
+      100% { filter: drop-shadow(0 0 0 rgba(61, 219, 133, 0)); }
+    }
+
+    .charge {
+      margin: 18px 0 0; display: inline-flex; align-items: center; gap: 8px; padding: 9px 16px 9px 12px; border-radius: 999px;
+      background: #fff; box-shadow: 0 8px 24px -10px rgba(0,0,0,.18); font-size: 15px; font-weight: 600;
+      font-variant-numeric: tabular-nums; transition: color .4s;
+    }
+    .charge svg { width: 18px; height: 18px; color: var(--fillc, #DB3838); transition: color .2s; }
+    .charge.done { color: #1A7F47; }
+    .charge.done svg { color: #1A7F47; }
+
+    .intro-title {
+      margin: 26px 0 10px; font-size: clamp(30px, 8.4vw, 60px); line-height: 1.04; letter-spacing: -.035em; font-weight: 800;
+      text-wrap: balance;
+    }
+    .intro-title em { font-style: normal; color: #1A7F47; }
+    .intro-sub { margin: 0; max-width: 26em; font-size: clamp(16px, 4.2vw, 19px); color: var(--ink-2); text-wrap: balance; }
+
+    .scroll-cue {
+      position: absolute; left: 0; right: 0; margin-inline: auto; width: max-content; bottom: calc(22px + env(safe-area-inset-bottom)); z-index: 2;
+      display: grid; justify-items: center; gap: 2px; text-decoration: none; font-size: 13px; font-weight: 600; color: var(--ink-2);
+    }
+    .scroll-cue svg { width: 22px; height: 22px; animation: nudge 1.8s ease-in-out infinite; }
+    @keyframes nudge { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(6px); } }
+
+    /* entrance: hidden until the script plays the intro (without JS everything just shows) */
+    .js .intro [data-in] { opacity: 0; transform: translateY(18px); }
+    .js .intro .forty[data-in] { transform: scale(.94); }
+    .intro [data-in].in { opacity: 1; transform: none; transition: opacity .9s ease, transform 1s cubic-bezier(.2,.8,.2,1); }
+    @media (prefers-reduced-motion: reduce) {
+      .js .intro [data-in] { opacity: 1; transform: none; }
+      .scroll-cue svg, .forty.full .forty-fill { animation: none; }
+    }
+
     /* ---------- Hero (the Electric view: sage) ---------- */
     .hero {
       position: relative; z-index: 2; color: var(--sage-ink);
@@ -89,7 +159,7 @@
     }
     .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: #3DDB85; box-shadow: 0 0 0 4px rgba(61,219,133,.25); }
     .hero .word { font-size: clamp(96px, 15vw, 210px); color: var(--sage-word); opacity: .85; margin-left: -.04em; }
-    .hero h1 {
+    .hero h2 {
       font-size: clamp(26px, 3.2vw, 40px); line-height: 1.12; letter-spacing: -.025em; font-weight: 700;
       margin: 18px 0 14px; color: #fff; max-width: 15em; text-wrap: balance;
     }
@@ -323,11 +393,34 @@
   </style>
 </head>
 <body>
+  <script>document.documentElement.classList.add('js')</script>
 
   <header class="bar" id="bar">
-    <a class="brand" href="#top"><img src="assets/apple-touch-icon.png" alt="">Porsche Electric</a>
+    <a class="brand" href="#intro"><img src="assets/apple-touch-icon.png" alt="">Porsche Electric</a>
     <a class="pill dark small" href="#install">Install</a>
   </header>
+
+  <!-- Birthday intro -->
+  <section class="intro" id="intro" aria-label="Happy 40th birthday, Mark-Benjamin">
+    <canvas class="confetti" id="confetti" aria-hidden="true"></canvas>
+    <div class="intro-inner">
+      <p class="intro-eyebrow" data-in>Happy birthday</p>
+      <button class="forty" id="forty" type="button" aria-label="40 — tap to charge again" data-in>
+        <span class="forty-base" aria-hidden="true">40</span>
+        <span class="forty-fill" id="fortyFill" aria-hidden="true">40</span>
+        <i class="forty-shadow" aria-hidden="true"></i>
+      </button>
+      <p class="charge" id="charge" data-in aria-live="polite">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg>
+        <span id="chargeText">Charging · 0 %</span>
+      </p>
+      <h1 class="intro-title" data-in data-late>Mark-Benjamin,<br><em>fully charged</em> at 40.</h1>
+      <p class="intro-sub" data-in data-late>Happy 40th birthday! This app for your electric Porsche was made just for you.</p>
+    </div>
+    <a class="scroll-cue" href="#top" data-in data-late>See your app
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg>
+    </a>
+  </section>
 
   <!-- Hero: the Electric view -->
   <section class="hero" id="top">
@@ -335,7 +428,7 @@
       <div class="hero-copy">
         <div class="eyebrow"><span class="dot"></span>Unofficial app for the Cayenne &amp; Macan Electric · iPhone</div>
         <p class="word" aria-hidden="true">Electric</p>
-        <h1>Your electric Porsche, one swipe away.</h1>
+        <h2>Your electric Porsche, one swipe away.</h2>
         <p class="lead">Battery, climate, trips and where it’s parked — each on its own calm card, with a 3D Cayenne or Macan in your car’s own paint colour. Three colour schemes, and a racing game built from your real drives.</p>
         <div class="cta">
           <a class="pill dark" href="#install">
@@ -704,7 +797,7 @@
   <footer>
     <div class="wrap">
       <p>“Porsche Electric” is a private, unofficial hobby app by George Schell, shared with friends. It is not made, endorsed or supported by Dr. Ing. h.c. F. Porsche AG, and it is not the official My Porsche app. Porsche, Cayenne, Macan and Porsche Connect are trademarks of Dr. Ing. h.c. F. Porsche AG.</p>
-      <p>Screenshots show demo data.</p>
+      <p>Made for Mark-Benjamin’s 40th birthday. Screenshots show demo data.</p>
     </div>
   </footer>
 
@@ -788,6 +881,118 @@
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }), { rootMargin: '0px 0px -8% 0px' });
     document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  </script>
+  <script>
+    // Birthday intro: the 40 fills like the app's battery card (red → amber → green, wavy edge), then confetti
+    (function () {
+      const root = document.documentElement;
+      const forty = document.getElementById('forty'), fill = document.getElementById('fortyFill');
+      const charge = document.getElementById('charge'), chargeText = document.getElementById('chargeText');
+      const intro = document.getElementById('intro');
+      const items = [...intro.querySelectorAll('[data-in]')];
+      const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Battery colour (Cards.swift: BatteryColour)
+      const stops = [[0, [.86, .22, .22]], [.2, [.95, .45, .25]], [.35, [.96, .70, .25]], [.6, [.55, .80, .45]], [1, [.10, .50, .28]]];
+      function battery(x) {
+        for (let i = 1; i < stops.length; i++) if (x <= stops[i][0]) {
+          const [a, ca] = stops[i - 1], [b, cb] = stops[i], t = (x - a) / (b - a);
+          return 'rgb(' + ca.map((c, k) => Math.round((c + (cb[k] - c) * t) * 255)).join(',') + ')';
+        }
+        return 'rgb(26,128,71)';
+      }
+      // The fill's right edge is a soft wave, like the card's
+      function clip(p, phase) {
+        const amp = 4, pts = ['0% 0%'];
+        for (let i = 0; i <= 14; i++) {
+          const y = i / 14, x = p * (100 + 2 * amp) - amp + amp * Math.sin(y * Math.PI * 2.2 + phase);
+          pts.push(x.toFixed(2) + '% ' + (y * 100).toFixed(2) + '%');
+        }
+        pts.push('0% 100%');
+        const v = 'polygon(' + pts.join(',') + ')';
+        fill.style.clipPath = v; fill.style.webkitClipPath = v;
+      }
+      function setCharge(p) {
+        const c = battery(p);
+        fill.style.setProperty('--fillc', c); charge.style.setProperty('--fillc', c);
+        chargeText.textContent = p < 1 ? 'Charging · ' + Math.round(p * 100) + ' %' : 'Fully charged';
+        charge.classList.toggle('done', p >= 1);
+      }
+      const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+
+      let running = false;
+      function play() {
+        if (running) return;
+        running = true;
+        forty.classList.remove('full');
+        const dur = 2600, start = performance.now();
+        (function frame(now) {
+          const t = Math.min(1, (now - start) / dur), p = ease(t);
+          clip(p, now / 380);
+          setCharge(p);
+          if (t < 1) return requestAnimationFrame(frame);
+          clip(1, 0); running = false;
+          forty.classList.add('full');
+          burst();
+          items.filter(el => el.hasAttribute('data-late')).forEach((el, i) => setTimeout(() => el.classList.add('in'), 120 + i * 160));
+        })(start);
+      }
+
+      // Confetti in the app's colours: studio tones, battery greens and the Bauhaus / Retro accents
+      const canvas = document.getElementById('confetti'), ctx = canvas.getContext('2d');
+      const colours = ['#7F9A9B', '#CDBCA6', '#C09F90', '#8796AB', '#9F99B1', '#6FB67E', '#3DDB85', '#CF5638', '#EE8B2F', '#3C8DD3', '#E07A45', '#1A7F47'];
+      let parts = [], raf = 0, W = 0, H = 0, dpr = 1;
+      function size() {
+        dpr = Math.min(devicePixelRatio || 1, 2);
+        W = intro.clientWidth; H = intro.clientHeight;
+        canvas.width = W * dpr; canvas.height = H * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      function burst() {
+        if (reduce) return;
+        size();
+        const r = forty.getBoundingClientRect(), ir = intro.getBoundingClientRect();
+        const cx = r.left - ir.left + r.width / 2, cy = r.top - ir.top + r.height * .45;
+        const n = W < 600 ? 120 : 190, speed = Math.max(W, 420) / 70;
+        for (let i = 0; i < n; i++) {
+          const side = i % 2 ? 1 : -1;                         // two fans, up and out to the left and right
+          const a = -Math.PI / 2 + side * (.25 + Math.random() * .75);
+          const v = speed * (.55 + Math.random() * .75);
+          parts.push({
+            x: cx + side * r.width * .18, y: cy, vx: Math.cos(a) * v, vy: Math.sin(a) * v,
+            w: 6 + Math.random() * 7, h: 4 + Math.random() * 5, round: Math.random() < .3,
+            rot: Math.random() * 6.28, vr: (Math.random() - .5) * .3, tilt: Math.random() * 6.28, vt: .08 + Math.random() * .12,
+            c: colours[(Math.random() * colours.length) | 0], life: 0
+          });
+        }
+        if (!raf) raf = requestAnimationFrame(tick);
+      }
+      function tick() {
+        ctx.clearRect(0, 0, W, H);
+        parts = parts.filter(p => p.y < H + 30 && p.life < 420);
+        for (const p of parts) {
+          p.life++; p.vx *= .985; p.vy = p.vy * .985 + .16; p.x += p.vx; p.y += p.vy; p.rot += p.vr; p.tilt += p.vt;
+          ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot); ctx.scale(1, Math.cos(p.tilt));
+          ctx.fillStyle = p.c;
+          if (p.round) { ctx.beginPath(); ctx.arc(0, 0, p.h * .6, 0, 6.283); ctx.fill(); }
+          else ctx.fillRect(-p.w / 2, -p.h / 2, p.w, p.h);
+          ctx.restore();
+        }
+        raf = parts.length ? requestAnimationFrame(tick) : 0;
+        if (!raf) ctx.clearRect(0, 0, W, H);
+      }
+
+      forty.addEventListener('click', () => { if (!running) { setCharge(0); clip(0, 0); play(); } });
+
+      if (reduce) {
+        clip(1, 0); setCharge(1); items.forEach(el => el.classList.add('in'));
+        return;
+      }
+      clip(0, 0); setCharge(0);
+      // entrance: eyebrow, the empty 40, the charge pill; then charge
+      items.filter(el => !el.hasAttribute('data-late')).forEach((el, i) => setTimeout(() => el.classList.add('in'), 150 + i * 180));
+      setTimeout(play, 900);
+    })();
   </script>
 </body>
 </html>
