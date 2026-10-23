@@ -9,9 +9,9 @@
   <key>thinning</key><string>&lt;none&gt;</string>
   <key>manifest</key>
   <dict>
-    <key>appURL</key><string>https://georgeschell.github.io/my-cayenne/MyCayenne.ipa</string>
-    <key>displayImageURL</key><string>https://georgeschell.github.io/my-cayenne/assets/icon-57.png</string>
-    <key>fullSizeImageURL</key><string>https://georgeschell.github.io/my-cayenne/assets/icon-512.png</string>
+    <key>appURL</key><string>https://georgeschell.github.io/porsche-electric/MyCayenne.ipa</string>
+    <key>displayImageURL</key><string>https://georgeschell.github.io/porsche-electric/assets/icon-57.png</string>
+    <key>fullSizeImageURL</key><string>https://georgeschell.github.io/porsche-electric/assets/icon-512.png</string>
   </dict>
 </dict>
 </plist>

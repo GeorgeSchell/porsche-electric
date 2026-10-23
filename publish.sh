@@ -1,5 +1,5 @@
 #!/bin/zsh
-# Rebuilds the app, signs it for the registered iPhones and publishes it on https://georgeschell.github.io/my-cayenne/
+# Rebuilds the app, signs it for the registered iPhones and publishes it on https://georgeschell.github.io/porsche-electric/
 # After adding a friend's UDID at developer.apple.com (Devices), just run: ./publish.sh
 set -e
 cd "${0:A:h}"
