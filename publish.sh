@@ -7,12 +7,12 @@ app=../MyCayenne
 work=$(mktemp -d)
 
 xcodebuild -project $app/MyCayenne.xcodeproj -scheme MyCayenne -configuration Release -destination 'generic/platform=iOS' \
-  -archivePath $work/MyCayenne.xcarchive -derivedDataPath $work/dd -allowProvisioningUpdates archive -quiet
+  -archivePath $work/MyCayenne.xcarchive -derivedDataPath $work/dd -allowProvisioningUpdates DEVELOPMENT_TEAM=L9X6HR23RJ archive -quiet
 xcodebuild -exportArchive -archivePath $work/MyCayenne.xcarchive -exportOptionsPlist ExportOptions.plist \
   -exportPath $work/export -allowProvisioningUpdates -quiet
 
 cp $work/export/MyCayenne.ipa MyCayenne.ipa
-sed 's#<string>MyCayenne</string>#<string>My Cayenne</string>#' $work/export/manifest.plist > manifest.plist
+sed 's#<string>MyCayenne</string>#<string>Porsche Electric</string>#' $work/export/manifest.plist > manifest.plist
 
 # version and date on the install button
 info=$work/MyCayenne.xcarchive/Products/Applications/MyCayenne.app/Info.plist
@@ -26,7 +26,7 @@ devices=$(security cms -D -i $work/Payload/MyCayenne.app/embedded.mobileprovisio
 echo "Signed for $devices registered iPhones."
 
 git add -A
-git commit -m "Build $version ($build), $date" -q
+git commit -m "Build $version ($build), $date" ${COMMIT_TRAILER:+-m "$COMMIT_TRAILER"} -q
 git push -q
 rm -rf $work
 echo "Published. GitHub Pages updates in about a minute."

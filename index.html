@@ -3,12 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-  <title>My Cayenne — your Cayenne Electric on your iPhone</title>
-  <meta name="description" content="Battery, climate, trips, location and a racing game for the Cayenne Electric, with a 3D car in your paint. Private iPhone app — how to install it.">
+  <title>Porsche Electric — unofficial iPhone app for the Cayenne &amp; Macan Electric</title>
+  <meta name="description" content="Battery, climate, trips, location and a racing game for the Cayenne Electric and Macan Electric, with a 3D car in your paint. Unofficial private iPhone app — how to install it.">
   <meta name="theme-color" content="#7F9A9B">
   <meta name="color-scheme" content="light">
-  <meta property="og:title" content="My Cayenne">
-  <meta property="og:description" content="Your Cayenne Electric on your iPhone: battery, climate, trips, location and a race game.">
+  <meta property="og:title" content="Porsche Electric (unofficial)">
+  <meta property="og:description" content="Your Cayenne or Macan Electric on your iPhone: battery, climate, trips, location and a race game.">
   <meta property="og:image" content="https://georgeschell.github.io/my-cayenne/assets/energy.webp">
   <link rel="icon" type="image/png" href="assets/favicon.png">
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
@@ -173,6 +173,25 @@
     .perk b { display: block; font-size: 16px; margin-bottom: 4px; letter-spacing: -.01em; }
     .perk span { color: var(--ink-2); font-size: 14.5px; }
 
+    /* ---------- Cayenne or Macan ---------- */
+    .models { padding: 110px 0; background: linear-gradient(180deg, var(--slate-top), var(--slate)); color: var(--slate-ink); overflow: hidden; }
+    .models-grid { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(32px, 5vw, 72px); align-items: center; }
+    .models .word { font-size: clamp(64px, 8vw, 120px); margin: 0 0 22px -.03em; }
+    .models .word span { opacity: .55; }
+    .models .section-title { color: #fff; }
+    .models .section-sub { color: rgba(255,255,255,.88); }
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 24px; }
+    .chips span { background: rgba(255,255,255,.22); border: 1px solid rgba(255,255,255,.35); color: #fff; padding: 7px 14px; border-radius: 999px; font-size: 14px; font-weight: 500; }
+    .pair { display: grid; grid-template-columns: 1fr 1fr; gap: clamp(14px, 2.5vw, 28px); }
+    .pair figure { margin: 0; }
+    .pair figure:last-child { transform: translateY(48px); }
+    .pair figcaption { text-align: center; margin-top: 16px; font-weight: 600; color: #fff; }
+
+    /* ---------- Colour schemes ---------- */
+    .schemes { padding: 110px 0 120px; background: #EDE7DA; }
+    .sw { display: flex; justify-content: center; gap: 6px; margin-top: 12px; }
+    .sw em { width: 18px; height: 18px; border-radius: 50%; box-shadow: 0 0 0 2px #fff; }
+
     /* ---------- Install ---------- */
     .install { padding: 110px 0 100px; background: var(--sage); color: var(--sage-ink); position: relative; overflow: hidden; }
     .install .word.bg {
@@ -285,6 +304,8 @@
       .slide .phone { max-width: 250px; order: 2; }
       .slide .word { margin-bottom: 14px; }
       .trio { grid-template-columns: 1fr; gap: 56px; }
+      .models-grid { grid-template-columns: 1fr; }
+      .pair { max-width: 520px; margin: 0 auto; width: 100%; }
       .perks { grid-template-columns: 1fr 1fr; }
       .needs { grid-template-columns: 1fr; }
     }
@@ -304,7 +325,7 @@
 <body>
 
   <header class="bar" id="bar">
-    <a class="brand" href="#top"><img src="assets/apple-touch-icon.png" alt="">My Cayenne</a>
+    <a class="brand" href="#top"><img src="assets/apple-touch-icon.png" alt="">Porsche Electric</a>
     <a class="pill dark small" href="#install">Install</a>
   </header>
 
@@ -312,10 +333,10 @@
   <section class="hero" id="top">
     <div class="wrap">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="dot"></span>For the Cayenne Electric · iPhone</div>
+        <div class="eyebrow"><span class="dot"></span>Unofficial app for the Cayenne &amp; Macan Electric · iPhone</div>
         <p class="word" aria-hidden="true">Electric</p>
-        <h1>Your Cayenne Electric, one swipe away.</h1>
-        <p class="lead">Battery, climate, trips and where it’s parked — each on its own calm card, with a 3D model of your car in its own paint colour. And a racing game built from your real drives.</p>
+        <h1>Your electric Porsche, one swipe away.</h1>
+        <p class="lead">Battery, climate, trips and where it’s parked — each on its own calm card, with a 3D Cayenne or Macan in your car’s own paint colour. Three colour schemes, and a racing game built from your real drives.</p>
         <div class="cta">
           <a class="pill dark" href="#install">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v11m0 0-4.5-4.5M12 15l4.5-4.5M5 20h14"/></svg>
@@ -423,10 +444,10 @@
           <div>
             <p class="word" style="color: var(--dusk-word)">Race</p>
             <div class="feature-card">
-              <div class="cap">Cayenne Racer</div>
+              <div class="cap">Cayenne Racer · Macan Racer</div>
               <h3>A game, built in.</h3>
               <ul>
-                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h13l-2 4 2 4H5"/></svg><span>Race the Cayenne in landscape and chase your <b>best lap</b>.</span></li>
+                <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h13l-2 4 2 4H5"/></svg><span>Race your Cayenne or Macan in landscape and chase your <b>best lap</b>. The game is named after your car.</span></li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19c4-1 3-6 8-7s4-6 8-7"/></svg><span>Every drive you record turns into its own <b>race track</b>.</span></li>
                 <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="13" rx="2"/><circle cx="12" cy="12.5" r="3.5"/><path d="M8 6l1.5-2h5L16 6"/></svg><span>Photos taken along the way decide what the scenery looks like.</span></li>
               </ul>
@@ -437,6 +458,24 @@
     </div>
 
     <div class="dots" id="dots" role="tablist" aria-label="Choose a view"></div>
+  </section>
+
+  <!-- Cayenne or Macan -->
+  <section class="models">
+    <div class="wrap">
+      <div class="models-grid">
+        <div class="models-copy reveal">
+          <p class="word" style="color: var(--slate-word)">Cayenne <span>or</span> Macan</p>
+          <h2 class="section-title">It knows which one you drive.</h2>
+          <p class="section-sub">Sign in and the app reads your car’s model from your account, then shows the matching 3D car — a Cayenne Electric or a Macan Electric — painted in your car’s colour. It remembers it for the next start.</p>
+          <div class="chips"><span>Cayenne Electric</span><span>Macan Electric</span><span>Your paint colour</span></div>
+        </div>
+        <div class="pair">
+          <figure class="reveal"><div class="phone"><img src="assets/climate.webp" alt="Climate view with the Cayenne Electric" width="620" height="1348" loading="lazy"></div><figcaption>Cayenne</figcaption></figure>
+          <figure class="reveal"><div class="phone"><img src="assets/macan_climate.webp" alt="Climate view with the Macan Electric" width="620" height="1348" loading="lazy"></div><figcaption>Macan</figcaption></figure>
+        </div>
+      </div>
+    </div>
   </section>
 
   <!-- Tap a card -->
@@ -480,12 +519,37 @@
     </div>
   </section>
 
+  <!-- Colour schemes -->
+  <section class="schemes" id="schemes">
+    <div class="wrap">
+      <h2 class="section-title reveal">Three colour schemes.</h2>
+      <p class="section-sub reveal">Pick one under <b>Account › Appearance › Colour scheme</b>. Bauhaus circles and Retro stripes run on from one view into the next as you swipe.</p>
+      <div class="trio">
+        <figure class="reveal">
+          <div class="phone"><img src="assets/energy.webp" alt="Studio colour scheme" width="620" height="1348" loading="lazy"></div>
+          <figcaption><b>Studio</b><span>A calm colour for each view.</span>
+            <i class="sw"><em style="background:#7F9A9B"></em><em style="background:#CDBCA6"></em><em style="background:#C09F90"></em><em style="background:#8796AB"></em></i></figcaption>
+        </figure>
+        <figure class="reveal">
+          <div class="phone"><img src="assets/bauhaus_climate.webp" alt="Bauhaus colour scheme: cream paper with large overlapping circles" width="620" height="1348" loading="lazy"></div>
+          <figcaption><b>Bauhaus</b><span>Cream paper and big circles, after the 911 posters.</span>
+            <i class="sw"><em style="background:#5E7473"></em><em style="background:#CF5638"></em><em style="background:#8E8A74"></em><em style="background:#E07A45"></em></i></figcaption>
+        </figure>
+        <figure class="reveal">
+          <div class="phone"><img src="assets/retro_trips.webp" alt="Retro colour scheme: a seventies rainbow ribbon" width="620" height="1348" loading="lazy"></div>
+          <figcaption><b>Retro</b><span>A seventies rainbow ribbon winding through all views.</span>
+            <i class="sw"><em style="background:#3C8DD3"></em><em style="background:#D9433A"></em><em style="background:#EE8B2F"></em><em style="background:#6AB54A"></em></i></figcaption>
+        </figure>
+      </div>
+    </div>
+  </section>
+
   <!-- Install -->
   <section class="install" id="install">
     <p class="word bg" aria-hidden="true">Install</p>
     <div class="wrap">
       <h2 class="section-title">How to install</h2>
-      <p class="section-sub">My Cayenne isn’t in the App Store. Five steps, about ten minutes, only once.</p>
+      <p class="section-sub">Porsche Electric isn’t in the App Store. Five steps, about ten minutes, only once.</p>
 
       <div class="why">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>
@@ -548,7 +612,7 @@
             <div class="install-box">
               <a class="install-btn" id="installBtn" href="itms-services://?action=download-manifest&amp;url=https://georgeschell.github.io/my-cayenne/manifest.plist">
                 <img src="assets/apple-touch-icon.png" alt="">
-                <span><b>Install My Cayenne</b><span id="buildInfo">Version 1.0 (1) · 22 Oct 2026</span></span>
+                <span><b>Install Porsche Electric</b><span id="buildInfo">Version 1.0 (1) · 23 Oct 2026</span></span>
               </a>
               <div class="qr" id="qr">
                 <img src="assets/qr.svg" alt="QR code for this page">
@@ -556,7 +620,7 @@
               </div>
             </div>
             <div class="status" id="status"></div>
-            <p class="hint">On the Home Screen the app is called <b>Electric Porsche</b>.</p>
+            <p class="hint">On the Home Screen it’s called <b>Porsche Electric</b>. Already have an older build? Just install over it — your sign-in stays.</p>
           </div>
         </div>
 
@@ -578,7 +642,7 @@
           <div class="num">5</div>
           <h3>Open it and sign in</h3>
           <div class="body">
-            <p>Tap the <b>person icon</b> at the top right and sign in with your <b>My Porsche</b> account (Porsche ID) — the same one you use in Porsche’s own app. Your car appears in a few seconds. Unlocking asks for your <b>S-PIN</b>.</p>
+            <p>Tap the <b>person icon</b> at the top right (that’s also where the colour schemes are) and sign in with your <b>My Porsche</b> account (Porsche ID) — the same one you use in Porsche’s own app. Your car appears in a few seconds. Unlocking asks for your <b>S-PIN</b>.</p>
             <p>Just curious? Tap <b>Use demo data</b> instead to try every view without a car.</p>
           </div>
         </div>
@@ -586,7 +650,7 @@
 
       <div class="needs">
         <div class="need"><b>iPhone with iOS 18 or later</b>Registered by George (steps 1–2).</div>
-        <div class="need"><b>A Porsche ID</b>With a Cayenne Electric linked to Porsche Connect — or use demo mode.</div>
+        <div class="need"><b>A Porsche ID</b>With a Cayenne Electric or Macan Electric linked to Porsche Connect — or use demo mode.</div>
         <div class="need"><b>“Ask” about trips</b>Needs iOS 26 and an iPhone with Apple Intelligence. Everything else works without.</div>
       </div>
     </div>
@@ -602,7 +666,7 @@
           <div class="a"><p>Your iPhone isn’t in the current build yet. Check that George has your UDID and has confirmed the new build, then tap Install again. If the download started before he updated the page, delete the half-installed icon first.</p></div>
         </details>
         <details>
-          <summary>Nothing happens when I tap “Install My Cayenne”</summary>
+          <summary>Nothing happens when I tap “Install Porsche Electric”</summary>
           <div class="a"><p>Only Safari can install apps from a web page. If you opened the link in another browser or inside a messaging app, copy the address and paste it into Safari.</p></div>
         </details>
         <details>
@@ -618,6 +682,14 @@
           <div class="a"><p>Privately signed builds have an expiry date; the current one runs until <b>28 February 2027</b>. Before then, George will post a new build here — just install it again over the old one. Your sign-in and data stay.</p></div>
         </details>
         <details>
+          <summary>I have an older version installed — do I need to delete it?</summary>
+          <div class="a"><p>No. It’s the same app with a new name: install the new build from this page and it replaces the old one (it may have been called “My Cayenne” or “Electric Porsche”), keeping your sign-in and settings.</p></div>
+        </details>
+        <details>
+          <summary>Does it work with my car?</summary>
+          <div class="a"><p>It’s made for the <b>Cayenne Electric</b> and the <b>Macan Electric</b>. The data comes from Porsche Connect, and the app shows a 3D Cayenne or Macan depending on what your account reports.</p></div>
+        </details>
+        <details>
           <summary>How do I get updates?</summary>
           <div class="a"><p>Come back to this page and tap Install again. The version and date on the button show which build is online.</p></div>
         </details>
@@ -631,7 +703,7 @@
 
   <footer>
     <div class="wrap">
-      <p>My Cayenne is a private, unofficial hobby project by George Schell, shared with friends. It is not made, endorsed or supported by Dr. Ing. h.c. F. Porsche AG. Porsche, Cayenne and Porsche Connect are trademarks of Dr. Ing. h.c. F. Porsche AG.</p>
+      <p>“Porsche Electric” is a private, unofficial hobby app by George Schell, shared with friends. It is not made, endorsed or supported by Dr. Ing. h.c. F. Porsche AG, and it is not the official My Porsche app. Porsche, Cayenne, Macan and Porsche Connect are trademarks of Dr. Ing. h.c. F. Porsche AG.</p>
       <p>Screenshots show demo data.</p>
     </div>
   </footer>
